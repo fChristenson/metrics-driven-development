@@ -8,4 +8,4 @@ It should be easy to create a product.
 
 ## Budget
 
-The 95th percentile should be < 20 seconds.
+The average time it takes to create a product should be < 20 seconds.
