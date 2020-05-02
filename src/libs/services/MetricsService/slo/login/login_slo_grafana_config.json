@@ -1,0 +1,92 @@
+{
+  "datasource": null,
+  "aliasColors": {},
+  "bars": false,
+  "dashLength": 10,
+  "dashes": false,
+  "fill": 1,
+  "fillGradient": 0,
+  "gridPos": {
+    "h": 9,
+    "w": 12,
+    "x": 12,
+    "y": 0
+  },
+  "hiddenSeries": false,
+  "id": 2,
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": false,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "dataLinks": []
+  },
+  "percentage": false,
+  "pointradius": 2,
+  "points": false,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "stack": false,
+  "steppedLine": false,
+  "targets": [
+    {
+      "expr": "rate(login_success[30d]) / (rate(login_attempt[30d]) + rate(login_success[30d]))",
+      "legendFormat": "Login success rate",
+      "interval": "",
+      "format": "time_series",
+      "instant": false,
+      "refId": "A",
+      "intervalFactor": 1
+    }
+  ],
+  "thresholds": [],
+  "timeFrom": null,
+  "timeRegions": [],
+  "timeShift": null,
+  "title": "Login success rate",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "decimals": null,
+      "format": "short",
+      "label": "",
+      "logBase": 1,
+      "max": "1.0",
+      "min": "0",
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  }
+}

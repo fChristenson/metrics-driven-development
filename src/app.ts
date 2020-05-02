@@ -1,40 +1,52 @@
 import express, { Request, Response, NextFunction } from "express";
 import * as path from "path";
-import { userService } from "./libs/services";
-import { UserAlreadyExists } from "./libs/errors/UserAlreadyExistsError";
+import { metricsService, productService } from "./libs/services";
 import { InvalidLogin } from "./libs/errors/InvalidLogin";
 import { StatusError } from "./libs/errors/StatusError";
 import { ErrorType } from "./libs/errors/ErrorType";
+import prombundle from "express-prom-bundle";
+import { register } from "prom-client";
 
 export const app = express();
 
+app.use(prombundle({ includeMethod: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const distDir = path.resolve(__dirname, "..", "dist");
 
 app.use(express.static(distDir));
 
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await userService.getUserByUsernameAndPassword(
-    username,
-    password
-  );
-
-  if (!user) throw new InvalidLogin();
-
-  res.json(user);
+app.post("/api/v1/products", async (req, res) => {
+  const { name, price } = req.body;
+  await productService.createProduct(name, parseFloat(price));
+  res.redirect("/list");
 });
 
-app.post("/register", async (req, res) => {
+app.get("/api/v1/products", async (req, res) => {
+  const products = await productService.getAllProducts();
+  res.json(products);
+});
+
+app.get("/error", async (req, res) => {
+  res.status(500).end();
+});
+
+app.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
-  const maybeUser = await userService.getUserByUsername(username);
 
-  if (maybeUser) throw new UserAlreadyExists(username);
+  try {
+    if (username !== "foo" || password !== "bar") throw new InvalidLogin();
+  } catch (e) {
+    return next(e);
+  }
 
-  const user = await userService.createUser(username, password);
+  metricsService.loginSucceeded();
+  res.redirect("/create");
+});
 
-  res.json(user);
+app.get("/metrics", (req, res) => {
+  res.end(register.metrics());
 });
 
 app.all("*", (req: express.Request, res: express.Response) => {
@@ -45,13 +57,11 @@ app.use(
   (error: StatusError, req: Request, res: Response, next: NextFunction) => {
     switch (error.errorType) {
       case ErrorType.INVALID_LOGIN_ERROR:
-        //TODO: measure
-        break;
-
-      default:
-        console.error(error.message);
+        const e = error as InvalidLogin;
+        metricsService.loginAttempt();
         break;
     }
+    console.error(error.message);
     res.status(error.status || 500).json({ error: error.message });
   }
 );

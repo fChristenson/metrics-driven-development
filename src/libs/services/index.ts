@@ -1,3 +1,5 @@
-import { UserService } from "./UserService/UserService";
+import { MetricsService } from "./MetricsService/MetricsService";
+import { ProductService } from "./ProductService/ProductService";
 
-export const userService = new UserService();
+export const metricsService = new MetricsService();
+export const productService = new ProductService();
