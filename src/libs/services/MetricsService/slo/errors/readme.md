@@ -9,6 +9,4 @@ The system should be free from errors.
 
 ## Budget
 
-success rate = status code !~ 5[0-9]+
-
 The success rate should be > 95% each month

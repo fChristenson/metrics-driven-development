@@ -9,6 +9,4 @@ It should be easy to login.
 
 ## Budget
 
-success rate = success / attempts
-
 The success rate should be > 95% each month

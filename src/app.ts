@@ -18,8 +18,12 @@ const distDir = path.resolve(__dirname, "..", "dist");
 app.use(express.static(distDir));
 
 app.post("/api/v1/products", async (req, res) => {
-  const { name, price } = req.body;
+  const { name, price, time } = req.body;
   await productService.createProduct(name, parseFloat(price));
+  const start = new Date(time).getTime();
+  const end = new Date().getTime();
+  const timeInSeconds = Math.floor((end - start) / 1000);
+  metricsService.createProduct(timeInSeconds);
   res.redirect("/list");
 });
 

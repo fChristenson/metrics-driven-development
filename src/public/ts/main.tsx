@@ -23,6 +23,7 @@ const CreateProduct = () => {
       <form action="/api/v1/products" method="POST">
         <input type="text" name="name" placeholder="Product name" />
         <input type="number" name="price" placeholder="Product price" />
+        <input type="hidden" name="time" value={new Date().toISOString()} />
         <input type="submit" />
       </form>
     </div>
