@@ -5,7 +5,9 @@ import { InvalidLogin } from "./libs/errors/InvalidLogin";
 import { StatusError } from "./libs/errors/StatusError";
 import { ErrorType } from "./libs/errors/ErrorType";
 import prombundle from "express-prom-bundle";
-import { register } from "prom-client";
+import { register, collectDefaultMetrics } from "prom-client";
+
+collectDefaultMetrics({ register });
 
 export const app = express();
 
