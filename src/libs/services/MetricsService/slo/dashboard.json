@@ -61,7 +61,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "create_product_seconds_sum / create_product_seconds_count",
+          "expr": "histogram_quantile(0.5, sum(rate(create_product_seconds_bucket[5m])) by (le))",
           "interval": "",
           "legendFormat": "Create product time in seconds",
           "refId": "A"
@@ -221,7 +221,7 @@
         "current": false,
         "max": false,
         "min": false,
-        "show": true,
+        "show": false,
         "total": false,
         "values": false
       },
@@ -238,7 +238,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "Request success rate",
+          "alias": "Request latency",
           "yaxis": 1
         }
       ],
@@ -247,11 +247,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(http_request_duration_seconds_count{status_code!~\"5.+\"}[5m]) / rate(http_request_duration_seconds_count[5m])",
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
           "format": "time_series",
           "hide": false,
           "interval": "",
-          "legendFormat": "Request success rate",
+          "legendFormat": "Request latency",
           "refId": "A"
         }
       ],
@@ -259,7 +259,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Request success rate",
+      "title": "Request latency in seconds",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -277,7 +277,7 @@
         {
           "decimals": null,
           "format": "short",
-          "label": null,
+          "label": "",
           "logBase": 1,
           "max": "1.0",
           "min": "0",
@@ -306,7 +306,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -329,5 +329,5 @@
   "variables": {
     "list": []
   },
-  "version": 15
+  "version": 22
 }
