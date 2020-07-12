@@ -1,5 +1,6 @@
 import { loginAttemptCounter, loginSuccessCounter } from "./slo/login/counters";
 import { createProductTime } from "./slo/create_product/histograms";
+import { registrationEmailDelivered } from "./slo/registration_emails/counters";
 
 export class MetricsService {
   loginAttempt() {
@@ -12,5 +13,9 @@ export class MetricsService {
 
   createProduct(timeInSeconds: number) {
     createProductTime.observe(timeInSeconds);
+  }
+
+  registrationEmailDelivered() {
+    registrationEmailDelivered.inc(1);
   }
 }

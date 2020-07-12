@@ -55,6 +55,13 @@ app.get("/metrics", (req, res) => {
   res.end(register.metrics());
 });
 
+app.get("/metrics/image.png", (req, res) => {
+  if (req.query.email === "registration") {
+    metricsService.registrationEmailDelivered();
+  }
+  res.sendFile(path.resolve(__dirname, "public", "image.png"));
+});
+
 app.all("*", (req: express.Request, res: express.Response) => {
   res.sendFile(path.resolve(distDir, "view.html"));
 });
